@@ -44,13 +44,28 @@ goto :build-it
 
 :: Build the project
 :build-it
+
+:: Create build number if system variable doesn't exist
+IF NOT DEFINED BUILD_NUM (
+    @echo HERE
+    set BUILD_NUM=0
+) 
+set /a BUILD_NUM=%BUILD_NUM%+1;
+echo %BUILD_NUM%
+
+:: Log time and build number to log file
+@echo Build Number: %BUILD_NUM% >%LOGFILE%
+@echo Date: %date% %time% >>%LOGFILE%
+
+:: Set build destination and create directory if doesn't exist
 set DEST=%SRC%\Build
-if EXIST %DEST% rmdir /S /Q %DEST% >%LOGFILE%
-mkdir %DEST% >%LOGFILE%
+if EXIST %DEST% rmdir /S /Q %DEST% >>%LOGFILE%
+mkdir %DEST% >>%LOGFILE%
 
 @echo start build
 
-call %RunUAT_DIR% BuildCookRun -project="%cd%\autobuild_test.uproject" -noP4 -platform=Win64 -clientconfig=Development -serverconfig=Development -cook -allmaps -build -stage -pak -archive -archivedirectory="%cd%\build" | %SystemRoot%\System32\findstr.exe /c:"error" >%LOGFILE%
+:: Build UE4 project
+call %RunUAT_DIR% BuildCookRun -project="%cd%\autobuild_test.uproject" -noP4 -platform=Win64 -clientconfig=Development -serverconfig=Development -cook -allmaps -build -stage -pak -archive -archivedirectory="%cd%\build" | %SystemRoot%\System32\findstr.exe /c:"error" >>%LOGFILE%
 
 :: Create the release
 :generate-release
@@ -58,6 +73,7 @@ if not exist %RELEASE%\oldest mkdir %RELEASE%\oldest
 if not exist %RELEASE%\yesterday mkdir %RELEASE%\yesterday
 if not exist %RELEASE%\today mkdir %RELEASE%\today
 
+:: Shift release builds to new locations
 robocopy %RELEASE%\yesterday %RELEASE%\oldest /MOVE /s
 robocopy %RELEASE%\today %RELEASE%\yesterday /MOVE /s
 robocopy %DEST%\WindowsNoEditor %RELEASE%\today /MOVE /s
