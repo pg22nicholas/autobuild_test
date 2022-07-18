@@ -5,7 +5,7 @@
 
 set SRC=.
 set BUILD=.\build
-set RELEASE="E:\Programming projects\VFS-not-onedrive\Pipelines\release"
+set RELEASE="H:\release"
 set LOGFILE=.\autobuild.log
 set GITHUB_REPO="https://github.com/pg22nicholas/autobuild_test.git"
 set ENGINE_DIR="C:\Program Files\Epic Games\UE_4.27"
@@ -14,7 +14,7 @@ set RunUAT_DIR=%ENGINE_DIR%\Engine\Build\BatchFiles\RunUAT
 goto :getopts
 :usage
 @echo Usage:
-@echo   c:\> autobuild [--debug] [--help] [--pull]
+@echo c:\> autobuild [--debug] [--help] [--pull]
 @echo .
 goto :bye
 
@@ -45,13 +45,12 @@ goto :build-it
 :: Build the project
 :build-it
 set DEST=%SRC%\Build
-if EXIST %DEST% rmdir /S /Q %DEST% >>%LOGFILE%
-mkdir %DEST% >>%LOGFILE%
+if EXIST %DEST% rmdir /S /Q %DEST% >%LOGFILE%
+mkdir %DEST% >%LOGFILE%
 
 @echo start build
 
-set CURR_DIR=%cd%
-call %RunUAT_DIR% BuildCookRun -project="%CURR_DIR%\autobuild_test.uproject" -noP4 -platform=Win64 -clientconfig=Development -serverconfig=Development -cook -allmaps -build -stage -pak -archive -archivedirectory="%CURR_DIR%\build"
+call %RunUAT_DIR% BuildCookRun -project="%cd%\autobuild_test.uproject" -noP4 -platform=Win64 -clientconfig=Development -serverconfig=Development -cook -allmaps -build -stage -pak -archive -archivedirectory="%cd%\build" >%LOGFILE%
 
 :: Create the release
 :generate-release
@@ -75,5 +74,4 @@ set BUILD=
 set RELEASE=
 set GITHUB_REPO=
 set DEST=
-set CURR_DIR=
 set ENGINE_DIR=
