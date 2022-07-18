@@ -8,7 +8,8 @@ set BUILD=.\build
 set RELEASE="E:\Programming projects\VFS-not-onedrive\Pipelines\release"
 set LOGFILE=.\autobuild.log
 set GITHUB_REPO="https://github.com/pg22nicholas/autobuild_test.git"
-set RunUAT_DIR="E:\Programs\UE_4.27\Engine\Build\BatchFiles\RunUAT"
+set ENGINE_DIR="C:\Program Files\Epic Games\UE_4.27"
+set RunUAT_DIR=%ENGINE_DIR%\Engine\Build\BatchFiles\RunUAT
 
 goto :getopts
 :usage
@@ -75,3 +76,4 @@ set RELEASE=
 set GITHUB_REPO=
 set DEST=
 set CURR_DIR=
+set ENGINE_DIR=
