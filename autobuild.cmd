@@ -50,7 +50,7 @@ mkdir %DEST% >%LOGFILE%
 
 @echo start build
 
-call %RunUAT_DIR% BuildCookRun -project="%cd%\autobuild_test.uproject" -noP4 -platform=Win64 -clientconfig=Development -serverconfig=Development -cook -allmaps -build -stage -pak -archive -archivedirectory="%cd%\build" >%LOGFILE%
+call %RunUAT_DIR% BuildCookRun -project="%cd%\autobuild_test.uproject" -noP4 -platform=Win64 -clientconfig=Development -serverconfig=Development -cook -allmaps -build -stage -pak -archive -archivedirectory="%cd%\build" | %SystemRoot%\System32\findstr.exe /c:"error" >%LOGFILE%
 
 :: Create the release
 :generate-release
