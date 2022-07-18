@@ -1,3 +1,4 @@
+:: Copyright (C) Nicholas Johnson 2022
 @echo on
 @echo :
 @echo : Hi %USERNAME%
