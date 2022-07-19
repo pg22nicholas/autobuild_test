@@ -65,7 +65,7 @@ mkdir %DEST% >>%LOGFILE%
 @echo start build
 
 :: Build UE4 project
-call %RunUAT_DIR% BuildCookRun -project="%cd%\autobuild_test.uproject" -noP4 -platform=Win64 -clientconfig=Development -serverconfig=Development -cook -allmaps -build -stage -pak -archive -archivedirectory="%cd%\build" | %SystemRoot%\System32\findstr.exe /c:"error" >>%LOGFILE%
+call %RunUAT_DIR% BuildCookRun -project="%cd%\autobuild_test.uproject" -noP4 -platform=Win64 -clientconfig=Development -serverconfig=Development -cook -allmaps -build -stage -pak -archive -archivedirectory="%cd%\build" | %SystemRoot%\System32\findstr.exe "error ERROR" >>%LOGFILE%
 
 :: Create the release
 :generate-release
